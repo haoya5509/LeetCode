@@ -28,38 +28,37 @@ struct TreeNode {
     TreeNode *right;
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
+
 class Solution{
 private:
     TreeNode *root;
     void printPreSeqInner(TreeNode *node);
-    TreeNode* buildTree(const vector<int>&);
+	void printPostSeqInner(TreeNode *node);
+	void printMidSeqInner(TreeNode *node);
+	void printLevelSeqInner(TreeNode *node);
+    TreeNode* buildTree(const vector<int>&,int& pos);
     vector<int> initData(const string&input);
-    int pos;
 public:
-    //input just as "1,2,#,#,3,4,#,5"
     Solution(const string& input){
-        pos = 0;
+        int pos = 0;
         vector<int> vec = initData(input);
-        root = buildTree(vec);
-        pos = 0;
-        cout << "..." << hasPathSum(root,3);
+        root = buildTree(vec,pos);
+		cout << "Test: " << hasPathSum(root,12) << endl;
     }
-    void printPreSeq();
-    bool hasPathSum(TreeNode *root, int sum) {
-        if(root==NULL) return false;
-        return dfs(root,0,sum);
-    }
-    bool dfs(TreeNode* node,int sum,int res){
-        bool flag = false;
-        if(node->left == NULL && node->right == NULL)
-            return (sum+node->val == res)?true:false;
-        if(node->left)
-            flag = dfs(node->left,sum+node->val,res);
-        if(node->right)
-            flag = flag || dfs(node->right,sum+node->val,res);
-        return flag;
-    }
+    void printSeq(const string& type="pre");
+    bool hasPathSum(TreeNode *root, int sum);
 };
+bool Solution::hasPathSum(TreeNode *root,int sum){
+	if(root == NULL)
+		return false;
+	if(root->left == NULL && root->right == NULL)
+		return root->val == sum?true:false;
+	if(root->left && hasPathSum(root->left,sum-root->val))
+		return true;
+	if(root->right && hasPathSum(root->right,sum-root->val))
+		return true;
+	return false;	
+}
 void Solution::printPreSeqInner(TreeNode* node){
     if(node == NULL)
         return;
@@ -67,9 +66,40 @@ void Solution::printPreSeqInner(TreeNode* node){
     printPreSeqInner(node->left);
     printPreSeqInner(node->right);
 }
-void Solution::printPreSeq(){
-    printPreSeqInner(this->root);
+void Solution::printSeq(const string& type){
+	if(type == "pre")
+	    printPreSeqInner(this->root);
+	else if(type == "post")
+		printPostSeqInner(this->root);
+	else if(type == "mid")
+		printMidSeqInner(this->root);
+	else if(type == "level")
+		printLevelSeqInner(this->root);
     cout << endl;
+}
+void Solution::printPostSeqInner(TreeNode* node){
+	if(node == NULL) return;
+	printPostSeqInner(node->left);
+	printPostSeqInner(node->right);
+	cout << node->val << "...";
+}
+void Solution::printMidSeqInner(TreeNode* node){
+	if(node == NULL) return;
+	printMidSeqInner(node->left);
+	cout << node->val << "...";
+	printMidSeqInner(node->right);
+}
+void Solution::printLevelSeqInner(TreeNode* node){
+	if(node == NULL) return;
+	queue<TreeNode* > levelVec;
+	levelVec.push(node);
+	while(!levelVec.empty()){
+		TreeNode* cur = levelVec.front();
+		levelVec.pop();
+		cout << cur->val << "...";
+		if(cur->left) levelVec.push(cur->left);
+		if(cur->right) levelVec.push(cur->right);
+	}
 }
 vector<int> Solution::initData(const string& input){
     vector<int> preVec;
@@ -88,27 +118,26 @@ vector<int> Solution::initData(const string& input){
         }
         preVec.push_back(sum);
     }
-    for(size_t i=0;i<preVec.size();i++){
-        cout << preVec[i] << "...";
-    }
     return preVec;
 }
-TreeNode* Solution::buildTree(const vector<int>& vec){
+TreeNode* Solution::buildTree(const vector<int>& vec,int& pos){
     TreeNode* node;
     if(pos>=vec.size() || vec[pos] == -1){
         pos++;
         return NULL;
     }
     node = new TreeNode(vec[pos++]);
-    node->left = buildTree(vec);
-    node->right = buildTree(vec);
+    node->left = buildTree(vec,pos);
+	node->right = buildTree(vec,pos);
     return node;
 }
 
 int main(){
-    //Solution solution("5,4,11,7,#,#,2,#,#,8,13,#,#,4,#,1");
-    Solution solution("1,2");
-    solution.printPreSeq();
+	Solution solution("5,4,11,7,#,#,2,#,#,#,8,13,#,#,4,#,1");
+    solution.printSeq();
+	solution.printSeq("post");
+	solution.printSeq("mid");
+	solution.printSeq("level");
     system("pause");
     return 0;
 }
