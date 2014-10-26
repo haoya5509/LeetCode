@@ -18,7 +18,28 @@ Time 11:34PM 2014/10/26
 #include<vector>
 #include<cstring>
 using namespace std;
-bool isValidSudoku(vector<vector<char> > &board) {
+bool isValidSudoku(vector<vector<char> > &board){
+    bool rowFlag[9][10] = {0};
+    bool colFlag[9][10] = {0};
+    bool areaFlag[9][10] = {0};
+    for(size_t i=0;i<board.size();i++){
+        for(size_t j=0;j<board[i].size();j++){
+            if(!isdigit(board[i][j])) continue;
+            int index = board[i][j] - '0';
+            if(rowFlag[i][index])
+                return false;
+            rowFlag[i][index] = 1;
+            if(colFlag[j][index])
+                return false;
+            colFlag[j][index] = 1;
+            if(areaFlag[(i/3)*3+j/3][index])
+                return false;
+            areaFlag[(i/3)*3+j/3][index] = 1;
+        }
+    }
+    return true;
+}
+bool isValidSudoku1(vector<vector<char> > &board) {
     bool flag[10] = {0};
     for(int i=0;i<3;i++){
         for(int m=0;m<3;m++){
