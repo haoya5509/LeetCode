@@ -21,38 +21,31 @@ public:
 }
 };
 
-char *strStr(char *haystack,char *needle){
+char *KMP(char *haystack,char *needle){
 	if(!haystack||!needle) return NULL;	
 	int hl=0,nl=0;
 	for(;*(haystack+hl);hl++);
 	for(;*(needle+nl);nl++);
 	if(nl>hl) return NULL;
-	cout << nl << "   " << hl << endl;
-	vector<int> failed(nl);
+	vector<int> failed;
 	failed.push_back(-1);
 	for(int i=1;i<nl;i++){
 		int pos = failed[i-1];
 		while(pos!=-1 && needle[pos+1] != needle[i]) pos = failed[pos];
-		pos = (needle[pos+1] == needle[i])?pos+1:-1;
-		cout << pos << endl;
+		pos = (needle[pos+1] == needle[i])? pos+1 : -1;
 		failed.push_back(pos);
 	}
-	for(int i=0;i<nl;i++)
-		cout << failed[i] << "..";
-	cout << endl;
 	int i=0,j=0;
-	while(j<nl || i<=hl-nl){
+	while(j<nl && i<hl){
 		if(haystack[i] == needle[j]){
 			i++;
 			j++;
 			continue;	
 		}
-		int pos = failed[j];
-		if(pos == -1){
-			i++;
-			j=0;	
+		if(j == 0){
+			i++;	
 		}else{
-			j=pos;
+			j=failed[j-1]+1;
 		}
 	}
 	if(j==nl) return haystack+i-nl;
@@ -60,6 +53,6 @@ char *strStr(char *haystack,char *needle){
 }
 
 int main(){
-	cout << strStr("abacababc","abab");
+	cout << KMP("mississippi","a");
 	return 0;	
 }
