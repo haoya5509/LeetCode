@@ -1,33 +1,39 @@
+/**
+Maximum Product Subarray Total Accepted: 11980 Total Submissions: 73885 My Submissions Question Solution 
+Find the contiguous subarray within an array (containing at least one number) which has the largest product.
+
+For example, given the array [2,3,-2,4],
+the contiguous subarray [2,3] has the largest product = 6.
+
+Author: haoya5509
+Time: 12:23AM 2014/11/13
+*/
 #include<iostream>
+#include<cstring>
 using namespace std;
-int maxProductInner(int A[],int l,int r){
-	if(l==r) return 0;
-	if(l+1==r) return A[l];
-	int m = l+(r-l)/2;
-	int lmax = maxProductInner(A,l,m);
-	int rmax = maxProductInner(A,m,r);
-	int L=1,R=1,tmp=1,first=1;
-	for(int i=m-1;i>=l;i--){
-		tmp*=A[i];
-		if(first){
-			L=tmp;
-			first = 0;
-		}
-		if(tmp>L) L=tmp;
-	}tmp=1; first=1;
-	for(int j=m+1;j<l;j++){
-		tmp*=A[j];
-		if(first){
-			R=tmp;
-			first=0;
-		}
-		if(tmp>R) R=tmp;
-	}
-	return max(max(lmax,rmax),R*L*A[m]);
-}
 int maxProduct(int A[], int n) {
- 	return maxProductInner(A,0,n);       
+	int dp[100000+10][2];   
+	memset(dp,0,sizeof(dp));     
+	dp[0][0]=dp[0][1]=A[0];
+	for(int i=1;i<n;i++){
+		if(A[i]>0){
+			dp[i][0]=max(dp[i-1][0]*A[i],A[i]);
+			dp[i][1]=min(dp[i-1][1]*A[i],A[i]);
+		}
+		if(A[i]<0){
+			dp[i][0]=max(dp[i-1][1]*A[i],A[i]);
+			dp[i][1]=min(dp[i-1][0]*A[i],A[i]);
+		}
+	}
+	int res=A[0];
+	for(int i=0;i<n;i++){
+		for(int j=0;j<2;j++)
+			if(dp[i][j]>res)
+				res=dp[i][j];
+	}
+	return res;
 }
+
 int main(){
 	int A[] = {2,3,-2,4};
 	cout << maxProduct(A,4) << endl;
