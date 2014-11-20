@@ -33,7 +33,7 @@ void dfs(int start,int level,int sum,vector<int> &num,vector<vector<int> > &res,
         cur.pop_back();
     }
 }
-vector<vector<int> > threeSum(vector<int> &num) {
+vector<vector<int> > threeSum2(vector<int> &num) {
     vector<vector<int> > res;
     vector<int> cur;
     for(int i=0;i<num.size();i++){
@@ -49,7 +49,7 @@ vector<vector<int> > threeSum(vector<int> &num) {
     }
     return trueRes;
 }
-vector<vector<int> > threeSum(vector<int> &num){
+vector<vector<int> > threeSum1(vector<int> &num){
 	vector<vector<int> > res;
     vector<int> cur;
     for(int i=0;i<num.size();i++){
@@ -69,6 +69,19 @@ vector<vector<int> > threeSum(vector<int> &num){
     	}
     }
     return res;
+}
+vector<vector<int> > threeSum(vector<int> &num){
+	vector<vector<int> > res;
+    vector<int> cur;
+    vector<int> rem;
+    for(int i=0;i<num;i++){
+    	rem.push_back(-num[i]);
+    }
+    for(int i=1;i<num.size();i++){
+    	for(int j=i+1;j<num.size();j++){
+    		if(num[i]+num[j]=)
+    	}
+    }
 }
 int main(){
     int num[]={-1,0,1,2,-1,4};
