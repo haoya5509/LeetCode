@@ -24,41 +24,31 @@ Time: 11:36PM 2014/11/17
 
 #include<iostream>
 #include<string>
+#include<utility>
 #include<unordered_set>
 #include<queue>
-using namespace std;	
-bool isOnediff(string tar,string dat){
-	int k=0;
-	for(int i=0;i<tar.size();i++){
-		if(tar[i]!=dat[i])
-			k++;
-	}
-	if(k==1) return true;
-	return false;
-}
+#include<map>
+using namespace std;
 int ladderLength(string start, string end, unordered_set<string> &dict) {
-	queue<string> qs;
-	queue<int> len;
-	qs.push(start);
-	len.push(1);
-	while(!qs.empty()){
-		string str=qs.front();
-		int tmp=len.front();
-		cout<<str<<".."<<tmp<<endl;
-		if(isOnediff(str,end))
-			return tmp+1;
-		qs.pop();
-		len.pop();
-		//for(int i=0;i<dict.size();i++){
-		for(unordered_set<string>::iterator iter=dict.begin();iter!=dict.end();iter++){
-			if(!isOnediff(*iter,str)){
-				cout<<*iter<<"~~"<<endl;
-				continue;
+	map<string,int> flag;
+	flag[start]=1;
+	queue<string> bfs;
+	bfs.push(start);
+	while(!bfs.empty()){
+		string str=bfs.front();
+		bfs.pop();
+		for(int i=0;i<str.size();i++){
+			string tmp=str;
+			for(char j='a';j<='z';j++){
+				tmp[i]=j;
+				if(tmp==end){
+					return flag[str]+1;
+				}
+				if(dict.count(tmp)>=1&&flag.count(tmp)==0){
+					bfs.push(tmp);
+					flag[tmp]=flag[str]+1;
+				}
 			}
-			qs.push(*iter);
-			len.push(tmp+1);
-			cout<<"inner:"<<*iter<<"..."<<tmp+1<<endl;
-			dict.erase(iter);
 		}
 	}
 	return 0;
@@ -68,13 +58,7 @@ int main(){
 	string end("dog");
 	unordered_set<string> dict;
 	dict.insert("hot");
-	dict.insert("cog");
 	dict.insert("dog");
-	dict.insert("tot");
-	dict.insert("hog");
-	dict.insert("hop");
-	dict.insert("pot");
-	dict.insert("dot");
 	for(unordered_set<string>::iterator iter=dict.begin();iter!=dict.end();iter++){
 		cout<<*iter<<endl;
 	}
