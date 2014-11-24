@@ -26,19 +26,22 @@ Visually, the graph looks like the following:
 Author: haoya5509
 Time: 12:33AM 2014/11/17
 */
-
-unordered_map<int,UndirectedGraphNode *> created;
-UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
-	if(node==NULL)
-		return NULL;
-    if(created.find(node->label)!=created.end())
-        return created[node->label];
-	UndirectedGraphNode *cur=new UndirectedGraphNode(node->label);
-	created[node->label] = cur;
-	for(int i=0;i<node->neighbors.size();i++){
-        UndirectedGraphNode *nei = cloneGraph(node->neighbors[i]);
-		cur->neighbors.push_back(nei);
-		created[node->neighbors[i]] = nei;
-	}
-	return cur;
-}
+class Solution {
+public:
+    UndirectedGraphNode *cloneGraph(const UndirectedGraphNode *node) {
+        if (!node)
+            return nullptr;
+        if (visited.find(node->label) != visited.end())
+            return visited[node->label];
+        UndirectedGraphNode * ans = new UndirectedGraphNode(node->label);
+        visited[ans->label] = ans;
+        for (const auto & next : node->neighbors) {
+            auto x = cloneGraph(next);
+            ans->neighbors.push_back(x);
+            visited[x->label] = x;
+        }
+        return ans;
+    }
+private:
+    unordered_map<int, UndirectedGraphNode *> visited;
+};
