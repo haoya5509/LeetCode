@@ -26,12 +26,26 @@ Time: 2014/11/24 22:26PM
 */
 void connect(TreeLinkNode *root) {
     if(root==NULL) return;
-    TreeLinkNode *p=root->left,*q=root->right;
-    while(p&&q){
-        p->next = q;
-        p=findRight()
-        q=q->left?q->left:q->right;
+    queue<pair<TreeLinkNode *,int> > q;
+    q.push(make_pair(root,1));
+    TreeLinkNode *cur=root;
+    int cnt=0;
+    while(!q.empty()){
+        pair<TreeLinkNode *,int> tmp=q.front();
+        q.pop();
+        if(tmp.second!=cnt){
+          cnt=tmp.second;
+          cur->next=NULL;
+          cur=tmp.first;
+        }else{
+          cur->next=tmp.first;
+          cur=cur->next;
+        }
+        if(tmp.first->left){ 
+          q.push(make_pair(tmp.first->left,tmp.second+1));
+        }
+        if(tmp.first->right){ 
+          q.push(make_pair(tmp.first->right,tmp.second+1));
+        }
     }
-    connect(root->left);
-    connect(root->right);
 }
