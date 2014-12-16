@@ -27,5 +27,5 @@ Time: 10:07PM 2014/11/29
 */
 
 ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-	        
+		        
 }
