@@ -18,6 +18,11 @@ void rotateInner(int nums[],int l,int r){
 	}
 }
 void rotate(int nums[], int n, int k) {
+	/**
+	 *!!!!!!!!To ensure k<n
+	 * */
+	if(k>n)
+		k%=n;
 	rotateInner(nums,0,n-k-1);
 	rotateInner(nums,n-k,n-1);
 	rotateInner(nums,0,n-1);
