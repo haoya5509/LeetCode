@@ -21,6 +21,17 @@ Time:	2015/02/05 12:12:49
 using namespace std;
 
 vector<vector<string> > partition(string s) {
+	int size = s.size();
  	vector<vector<string> > res;
+	vector<string> tmp;
+
+	vector<vector<bool> > flag(size);
+	for (int i = 0; i < m; ++i){
+		vector<bool> row(m + 1, 0);
+		row[0] = row[1] = true;
+		flag[i] = row;
+	}
+
+
 	return res;
 }
