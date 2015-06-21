@@ -1,4 +1,5 @@
 /**
+<<<<<<< HEAD
  * Binary Tree Inorder Traversal Total Accepted: 58636 Total Submissions: 162241 My Submissions Question Solution 
  * Given a binary tree, return the inorder traversal of its nodes' values.
  *
@@ -51,3 +52,28 @@ void inorderTraversal(TreeNode *root){
 	inorderTraversal(root->right);
 }
 
+=======
+Binary Tree Inorder Traversal Total Accepted: 58705 Total Submissions: 162446 My Submissions Question Solution
+Given a binary tree, return the inorder traversal of its nodes' values.
+
+For example:
+Given binary tree {1,#,2,3},
+   1
+    \
+     2
+    /
+   3
+return [1,3,2].
+
+Note: Recursive solution is trivial, could you do it iteratively?
+
+Author: haoya
+Time:   2015/4/3 9:21am
+*/
+
+vector<int> inorderTraversal(TreeNode *root) {
+    vector<int> res;
+    if(root == NULL) return res;
+
+}
+>>>>>>> 79902257ff5cdc1f6fa11f78da7597bf42ccddd8
